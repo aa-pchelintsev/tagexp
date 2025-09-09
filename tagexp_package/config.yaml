@@ -1,0 +1,72 @@
+io:
+  # Путь к файлу звонков (.xlsx или .csv)
+  calls_path: "./data/calls.xlsx"
+  # Директория с файлами p*.txt, каждый — отдельный промпт
+  prompts_dir: "./prompts"
+  # Путь к справочнику тегов (опционально)
+  tags_catalog_path: null
+
+data:
+  limit_rows: 3 # Ограничение количества строк для обработки (Если потребуется снять ограничение, просто закомментируйте или удалите строку limit_rows.)
+
+output:
+  # Путь к создаваемому Excel‑файлу с результатами
+  path: "./results.xlsx"
+  # Отображать полный текст расшифровки в основном листе
+  show_full_transcript: false
+  # Количество символов предпросмотра, если show_full_transcript=false
+  transcript_preview_chars: 700
+  # Включать колонку «Пояснение» на Главном листе
+  include_explanations: true
+  # Включать колонку «Замечания» на Главном листе
+  include_notes: true
+
+experiment:
+  # Сколько раз повторять запрос для каждого промпта
+  repeats_per_prompt: 3
+  # Правило большинства: ceil_half означает ≥2 из 3
+  majority_rule: "ceil_half"
+  # Количество параллельных запросов (1 означает последовательный режим)
+  parallel_requests: 1
+  # Максимальное число запросов в минуту для API
+  rate_limit_per_minute: 10
+
+api:
+  # Базовый URL для API
+  base_url: "https://gpte.retailcrm.tech/api/v1/completions/direct"
+  # account_id передаётся в body запроса
+  account_id: "vog-calls-test"
+  # Имя модели, которую следует вызвать
+  model: "gpt-4.1"
+  # Температура генерации (0.1 рекомендуется для тегирования)
+  temperature: 0.1
+  # Тайм‑аут ожидания ответа от сервера (секунд)
+  timeout_sec: 90
+  api_key: "dHJ3bdhGsbu4cyhgSgs3bsHGswb3h"
+  retry:
+    # Максимальное количество повторов при ошибках API
+    attempts: 3
+    # Тип ретрая: экспоненциальный
+    backoff: "exponential"
+
+excel:
+  # Использовать динамические формулы LAMBDA/LET (True — для Excel 365)
+  enable_dynamic_formulas: true
+  # Название колонки с тегами, проставленными человеком
+  human_tags_column: "Теги (оценка человека)"
+  # Разделитель для списка тегов в одной ячейке
+  delimiter: ","
+
+validation:
+  # Источник списка допустимых тегов: prompt_keys — берётся из промптов
+  allowed_tags_source: "prompt_keys"
+  # Режим нормализации регистра: from_allowed — как в каноне (с заглавной)
+  normalize_case: "from_allowed"
+  # Обрезать лишние пробелы при валидации тегов
+  trim_spaces: true
+
+logging:
+  # Уровень логирования (DEBUG, INFO, WARNING, ERROR)
+  level: "INFO"
+  # Путь к файлу журнала (поддерживается форматирование времени)
+  file: "./logs/run_%Y%m%d_%H%M%S.jsonl"
