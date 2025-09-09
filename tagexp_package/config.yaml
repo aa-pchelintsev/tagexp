@@ -42,7 +42,7 @@ api:
   temperature: 0.1
   # Тайм‑аут ожидания ответа от сервера (секунд)
   timeout_sec: 90
-  api_key: "dHJ3bdhGsbu4cyhgSgs3bsHGswb3h"
+  api_key: "xxx"
   retry:
     # Максимальное количество повторов при ошибках API
     attempts: 3
